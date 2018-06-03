@@ -34,7 +34,7 @@ module SDCFIFO_REG
     end
   end
 
-  always @(posedge WCLK or negedge RST_X) begin
+  always @(posedge WCLK) begin
     if(enq) begin
       mem[wadr_t] <= din;
     end

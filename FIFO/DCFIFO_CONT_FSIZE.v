@@ -70,7 +70,7 @@ module DCFIFO_CONT_FSIZE
     end
   end
 
-  always @(posedge WCLK or negedge RST_X) begin
+  always @(posedge WCLK) begin
     if(enq & wadr[LEN_LOG_A]) begin
       mem_b[wadr_b] <= din;
     end else if(enq & ~wadr[LEN_LOG_A])
