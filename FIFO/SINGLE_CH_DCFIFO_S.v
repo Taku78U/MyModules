@@ -43,7 +43,8 @@ module SINGLE_CH_DCFIFO_S
   wire [DW-1:0] dot_w;
   reg  [DW-1:0] dot_reg;  
   SDCFIFO_REG #(.DW(DW), .LEN_LOG(LEN_LOG))
-  dcpnc (.WCLK(CLK), .RCLK(CLK), .RST_X(RST_X), .WRST(~wsel), .RRST(~rden), .deq(rden),
+  dcpnc (.WCLK(CLK), .RCLK(CLK), .RST_X(RST_X), .WRST(~wsel), .RRST(~rden),
+         .enq(wsel), .deq(rden),
          .din(din), .dot(dot_w));
 
   always @(negedge CLK or negedge RST_X) begin

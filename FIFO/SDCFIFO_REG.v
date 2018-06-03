@@ -7,7 +7,7 @@ module SDCFIFO_REG
   #(parameter DW = 32,
     parameter LEN_LOG = 2, // LEN_LOG_A > LEN_LOG_B
     parameter LEN = 1 << LEN_LOG)
- (input  wire WCLK, RST_X,
+ (input  wire WCLK, RCLK, RST_X,
   input  wire WRST, RRST,
   input  wire enq, deq,
   input  wire [DW-1:0] din,
@@ -40,7 +40,7 @@ module SDCFIFO_REG
     end
   end
 
-  always @(negedge WCLK or negedge RST_X) begin
+  always @(negedge RCLK or negedge RST_X) begin
     if(~RST_X) begin
       radr <= 0;
     end else if(RRST) begin
