@@ -29,7 +29,7 @@ module RX_RECV
   // Startエッジ検出
   wire start;
   reg busy;
-  assign start = ~busy & (shreg[2] == 1'b0);
+  assign start = ~busy & (shreg[2:1] == 2'b10);
 
   wire fin; // 始まりがあれば、終わりもあるんだよ
   

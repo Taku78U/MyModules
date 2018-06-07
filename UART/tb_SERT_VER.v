@@ -8,7 +8,7 @@ module test;
   /* input */   
   reg CLK;
   reg RST_X;
-  wire wen;
+  reg  wen;
   wire [DW-1:0] din;
   
   /* TXoutput */
@@ -23,7 +23,30 @@ module test;
   wire [DW-1:0] dot;
   wire valid;
 
-  assign wen = rdy;
+  reg [31:0] rdy_cnt = 0;
+  localparam rdy_thr = 10000;
+  always @(posedge CLK or negedge RST_X) begin
+    if(~RST_X) begin
+      rdy_cnt <= 0;
+    end else if(((rdy_cnt >= rdy_thr) & (wr_ptr == 0)) | ((rdy_cnt >= 2) & (wr_ptr != 0))) begin
+      rdy_cnt <= 0;
+    end else if(rdy) begin
+      rdy_cnt <= rdy_cnt + rdy;
+    end else begin
+      rdy_cnt <= 0;
+    end
+  end
+
+  always @(posedge CLK or negedge RST_X) begin
+    if(~RST_X) begin
+      wen <= 1'b0;
+    end else if(wr_ptr == 0) begin
+      wen <= (rdy_cnt >= rdy_thr);
+    end else begin
+      wen <= (rdy_cnt >= 2);
+    end
+  end
+  
   initial begin
     CLK = 0;
     forever #(clock_half_period) CLK = ~CLK;
@@ -82,8 +105,10 @@ module test;
   end
 
   initial begin
-    $dumpfile("uut.vcd");
-    $dumpvars(0, uut);
+    //$dumpfile("uut.vcd");
+    //$dumpvars(0, uut);
+    $dumpfile("test.vcd");
+    $dumpvars(0, test);
   end
 
   initial begin

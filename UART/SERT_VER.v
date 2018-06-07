@@ -78,7 +78,7 @@ module SERT_VER
   wire [DW-1:0] din;
   assign wen = send_inst_wr & txrdy;
 
-  assign txfin = wen & (wrptr >= WR_LEN);
+  assign txfin = wen & (wrptr >= WR_LEN - 1);
 
   always @(posedge CLK or negedge RST_X) begin
     if(~RST_X) begin

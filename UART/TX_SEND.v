@@ -33,7 +33,7 @@ module TX_SEND
   wire samp = busy & (cnt == 0);
   always @(posedge CLK or negedge RST_X) begin
     if(~RST_X) begin
-      busy <= 1'b0;
+      busy <= 1'b1;
     end else if(start) begin
       busy <= 1'b1;
     end else if(fin) begin
@@ -45,7 +45,7 @@ module TX_SEND
     if(~RST_X) begin
       cnt <= 0;
     end else if(start | samp) begin
-      cnt <= SLOOP_MAX;
+      cnt <= SLOOP_MAX - 1;
     end else if(busy) begin
       cnt <= cnt - 1;
     end
